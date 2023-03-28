@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,20 +14,27 @@ import org.mozilla.javascript.Scriptable;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    int count=0;
+    private int count=0;
     Button goToActivityTwo;
     TextView resultTV, solutionTV;
     Button buttonC, buttonAC;
     Button buttonDivide, buttonMultiply, buttonPlus, buttonMinus, buttonEqual;
     Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
 
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile="com.example.myapplication";
 
+    private final String COUNT_KEY = "count";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        count = mPreferences.getInt(COUNT_KEY,0);
 
         goToActivityTwo=(Button) findViewById(R.id.activity_main);
         goToActivityTwo.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+
+
 
         resultTV=findViewById(R.id.result_tv);
         solutionTV=findViewById(R.id.solution_tv);
@@ -97,6 +108,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             resultTV.setText(finalResult);
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putInt(COUNT_KEY, count);
+        preferencesEditor.apply();
+    }
+
 
     String getResult(String data){
         try {
