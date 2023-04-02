@@ -7,14 +7,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Stack;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private int count=0;
+    String history;
     Button goToActivityTwo;
     TextView resultTV, solutionTV;
     Button buttonC, buttonAC;
@@ -25,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String sharedPrefFile="com.example.myapplication";
 
     private final String COUNT_KEY = "count";
+    private final String HISTORY_KEY = "history";
+
+    ArrayList<String> allHistory = new ArrayList<>();
+
 
 
     @Override
@@ -33,8 +46,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
+
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         count = mPreferences.getInt(COUNT_KEY,0);
+
+        Gson gson = new Gson();
+        String json=mPreferences.getString(HISTORY_KEY,null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        allHistory = gson.fromJson(json,type);
+
 
         goToActivityTwo=(Button) findViewById(R.id.activity_main);
         goToActivityTwo.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 Intent intent= new Intent(MainActivity.this,SecondActivity.class);
                 intent.putExtra("KEY_SENDER",Integer.toString(count));
+                intent.putExtra("HISTORY",allHistory);
+
                 startActivity(intent);
 
             }
@@ -89,15 +111,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             resultTV.setText("0");
             return;
         }
-        if(buttonText.equals("=")){
-            solutionTV.setText(resultTV.getText());
-            count++;
-            return;
-        }
+
         if(buttonText.equals("C")){
             dataToCalculate=dataToCalculate.substring(0,dataToCalculate.length()-1);
         }else {
             dataToCalculate = dataToCalculate + buttonText;
+        }
+        if(buttonText.equals("=")){
+            solutionTV.setText(resultTV.getText());
+            count++;
+            history = dataToCalculate + resultTV.getText();
+            allHistory.add(history);
+
+            return;
         }
 
         solutionTV.setText(dataToCalculate);
@@ -107,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!finalResult.equals("Err")){
             resultTV.setText(finalResult);
         }
+
     }
     @Override
     protected void onPause() {
@@ -114,6 +141,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         preferencesEditor.putInt(COUNT_KEY, count);
+
+        Gson gson= new Gson();
+        String json = gson.toJson(allHistory);
+        preferencesEditor.putString(HISTORY_KEY,json);
         preferencesEditor.apply();
     }
 
