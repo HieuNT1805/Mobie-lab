@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -18,7 +17,7 @@ import org.mozilla.javascript.Scriptable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Stack;
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Gson gson = new Gson();
         String json=mPreferences.getString(HISTORY_KEY,null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
         allHistory = gson.fromJson(json,type);
 
 
@@ -145,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Gson gson= new Gson();
         String json = gson.toJson(allHistory);
         preferencesEditor.putString(HISTORY_KEY,json);
+
         preferencesEditor.apply();
     }
 

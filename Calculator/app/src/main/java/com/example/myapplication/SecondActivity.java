@@ -43,7 +43,6 @@ public class SecondActivity extends AppCompatActivity {
 
         Intent receiver = getIntent();
         String values = receiver.getStringExtra("KEY_SENDER");
-        String history = receiver.getStringExtra("HISTORY");
 
         textView.setText(values);
 
