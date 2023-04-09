@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SecondActivity extends AppCompatActivity {
     Button button;
@@ -24,12 +25,10 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two);
 
-
-
-        ArrayList<String> allHistory = (ArrayList<String>) getIntent().getSerializableExtra("HISTORY");
+        ArrayList<History> allHistory = getIntent().getParcelableArrayListExtra("HISTORY");
 
         list = (ListView)findViewById(R.id.list);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.activity_listview,R.id.textView,allHistory);
+        HistoryAdapter arrayAdapter =new HistoryAdapter(this, allHistory);
         list.setAdapter(arrayAdapter);
         button=(Button) findViewById(R.id.activity_two);
         button.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final String COUNT_KEY = "count";
     private final String HISTORY_KEY = "history";
 
-    ArrayList<String> allHistory = new ArrayList<>();
+    ArrayList<History> allHistory = new ArrayList<>();
 
 
 
@@ -51,8 +52,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Gson gson = new Gson();
         String json=mPreferences.getString(HISTORY_KEY,null);
-        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        Type type = new TypeToken<ArrayList<History>>(){}.getType();
         allHistory = gson.fromJson(json,type);
+        if (allHistory==null){
+            allHistory=new ArrayList<>();
+        }
 
 
         goToActivityTwo=(Button) findViewById(R.id.activity_main);
@@ -61,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 Intent intent= new Intent(MainActivity.this,SecondActivity.class);
                 intent.putExtra("KEY_SENDER",Integer.toString(count));
-                intent.putExtra("HISTORY",allHistory);
+
+                intent.putParcelableArrayListExtra("HISTORY",allHistory);
 
                 startActivity(intent);
 
@@ -119,9 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(buttonText.equals("=")){
             solutionTV.setText(resultTV.getText());
             count++;
-            history = dataToCalculate + resultTV.getText();
-            allHistory.add(history);
-
+            saveData(dataToCalculate, resultTV.getText().toString());
             return;
         }
 
@@ -138,14 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-        preferencesEditor.putInt(COUNT_KEY, count);
 
-        Gson gson= new Gson();
-        String json = gson.toJson(allHistory);
-        preferencesEditor.putString(HISTORY_KEY,json);
-
-        preferencesEditor.apply();
     }
 
 
@@ -162,5 +158,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }catch (Exception e){
             return "Err";
         }
+    }
+    void saveData(String data, String result){
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putInt(COUNT_KEY, count);
+
+        Gson gson= new Gson();
+        allHistory.add(new History(data,result));
+        String json = gson.toJson(allHistory);
+        preferencesEditor.putString(HISTORY_KEY,json);
+
+        preferencesEditor.apply();
     }
 }
