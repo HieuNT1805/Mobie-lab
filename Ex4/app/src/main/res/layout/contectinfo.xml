@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello World, ContractActivity!"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left">
+
+        <TextView
+            android:layout_width="118dp"
+            android:layout_height="200px"
+            android:layout_margin="2dp"
+            android:text="Name"
+            android:textSize="50px" />
+
+        <TextView
+            android:layout_width="195dp"
+            android:layout_height="200px"
+            android:layout_margin="2dp"
+            android:text="John"
+            android:textSize="50px"
+            android:id="@+id/nameValue"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left">
+
+        <TextView
+            android:layout_width="118dp"
+            android:layout_height="200px"
+            android:layout_margin="2dp"
+            android:text="Email"
+            android:textSize="50px" />
+
+        <TextView
+            android:layout_width="195dp"
+            android:layout_height="200px"
+            android:layout_margin="2dp"
+            android:text="John@gmail.com"
+            android:textSize="50px"
+            android:id="@+id/emailValue"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left">
+
+        <TextView
+            android:layout_width="118dp"
+            android:layout_height="200px"
+            android:layout_margin="2dp"
+            android:text="Project"
+            android:textSize="50px" />
+
+        <TextView
+            android:layout_width="195dp"
+            android:layout_height="200px"
+            android:layout_margin="2dp"
+            android:text="Android game"
+            android:textSize="50px"
+            android:id="@+id/projectvalue"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Finish"
+            android:id="@+id/back"/>
+    </LinearLayout>
+</LinearLayout>

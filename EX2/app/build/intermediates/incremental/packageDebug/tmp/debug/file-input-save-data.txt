@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Tue Mar 28 12:47:33 ICT 2023
+0.base=D\:\\Mobie App\\Practice\\android-fundamentals-apps-v2\\HelloSharedPrefs\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+0.path=classes.dex
+count=1
+0.baseType=DIRECTORY
+0.set=DEX
